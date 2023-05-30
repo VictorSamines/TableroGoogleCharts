@@ -2,7 +2,7 @@ const queryProductTop = `SELECT name, COUNT(*) AS total_sales
 FROM public.sale_order_line
 GROUP BY name
 ORDER BY total_sales DESC
-LIMIT 5;`;
+LIMIT 10;`;
 
 const queryEmpleadoTop = `SELECT
 p.id AS partner_id,
