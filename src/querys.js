@@ -16,7 +16,7 @@ GROUP BY
 p.id, p.name
 ORDER BY
 total_sales DESC
-LIMIT 5;`;
+LIMIT 10;`;
 
 const queryClientesTop = `SELECT p.name AS customer_name, COUNT(so.id) AS total_sales
 FROM sale_order so

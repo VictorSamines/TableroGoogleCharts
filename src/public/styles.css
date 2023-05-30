@@ -21,16 +21,9 @@ h2 {
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: auto auto;
-  /* height: 70vh; */
   align-items: center;
-  gap: 2em;
+  /* gap: 2em; */
   border: 1px solid #ccc;
- /*  width: 500px;
-  height: 400px;
-  border: solid 1px;
-  padding: 0%;
-  border-color: darkgray;
-  display: inline-block; */
 }
 .chart-container-item {
   border: 1px solid #ccc;
@@ -41,12 +34,10 @@ h2 {
   height: 80vh;
   width: 75%;
   align-self: center;              
-  /* width: 310px;
-  height: 400px; */
 }
 
 @media screen and (max-width: 1023px) {
   .chart-container-main {
-    grid-template-columns: 100%;
+    grid-template-columns: 1fr;
   }
 }

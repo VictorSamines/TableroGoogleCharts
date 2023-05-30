@@ -17,6 +17,7 @@ function fetchDataAndDrawProductChart() {
 
 function drawProductChart(productData) {
 
+  /* Datatable de charts */
   var data = new google.visualization.DataTable();
   data.addColumn("string", "Name");
   data.addColumn("number", "Cantidad de Productos Vendidos");
@@ -27,14 +28,21 @@ function drawProductChart(productData) {
     data.addRow([item.name, parseInt(item.total_sales)])
   }
 
+  // Opciones de personalización del gráfico
   var options = {
-    title: 'Ventas por cantidad de Producto',
-    is3D: true,
+    title: "Platillos más vendidos",
+    width: 625,
+    height: 500,
+    hAxis: { title: "Ventas" },
+    vAxis: { title: "Productos" },
+    bar: {groupWidth: "95%"},
+    legend: { position: "none" },
   };
 
   var chart = new google.visualization.ChartWrapper({
-    chartType: 'PieChart',
+    chartType: 'BarChart',
     containerId: 'chart_div',
+    // Data que hace a el gráfico
     dataTable: data,
     options: options
   });
@@ -42,9 +50,10 @@ function drawProductChart(productData) {
   // Range filter
   var control = new google.visualization.ControlWrapper({
     controlType: 'NumberRangeFilter',
+    // Referencia a contenedor en HTML
     containerId: 'control_div',
     options: {
-      // Personalización
+      // Debe ser el mismo nombre de una de las columnas de datatable
       filterColumnLabel: 'Cantidad de Productos Vendidos',
       'ui': {'labelStacking': 'vertical'}
     }
@@ -72,9 +81,12 @@ function drawProductChart(productData) {
 
   console.log(valores)
 
+  // Combina diferentes componentes gráficos y de control en un solo panel interactivo. 
   var dashboard = new google.visualization.Dashboard(document.getElementById('chart-container'));
+  // establecer una relación de vinculación entre dos componentes
   dashboard.bind(control, chart);
 
+  // Cambiar valores del control range
   changeRange = function() {
   // Le pasamos el valor mínimo y máximo calculado
   control.setState({'lowValue': valores.minimo, 'highValue': valores.maximo});
@@ -82,5 +94,62 @@ function drawProductChart(productData) {
   };
 
   dashboard.draw(data);
+  // Llamar a la función para el gráfico de empleados después de dibujar el gráfico de productos
+  fetchDataAndDrawEmployeeChart();
+
+}
+function fetchDataAndDrawEmployeeChart() {
+  fetch("/empleado")
+    .then((response) => response.json())
+    .then((data) => {
+      drawEmployeeChart(data);
+    })
+    .catch((error) => {
+      console.error("Error al obtener los datos:", error);
+    });
 }
 
+function drawEmployeeChart(data) {
+  var dataTable = new google.visualization.DataTable();
+  dataTable.addColumn("string", "Empleado");
+  dataTable.addColumn("number", "Ventas");
+
+  var options = {
+    title: "Empleados con Mayores Ventas",
+    width: 625,
+    height: 500,
+    pieHole: 0.4, // Proporción del agujero central (0.4 significa un donut chart)
+    colors: ["#4285F4", "#DB4437", "#F4B400", "#0F9D58", "#AB47BC"], // Colores personalizados para las partes del gráfico
+  };
+
+  
+  var chartWrapper = new google.visualization.ChartWrapper({
+    chartType: "PieChart",
+    containerId: "chart-container2",
+    dataTable: data,
+    options: options
+  });
+
+  // Range filter
+  var control2 = new google.visualization.ControlWrapper({
+    controlType: 'NumberRangeFilter',
+    // Referencia a contenedor en HTML
+    containerId: 'control_div2',
+    options: {
+      // Debe ser el mismo nombre de una de las columnas de datatable
+      filterColumnLabel: 'Ventas',
+      'ui': {'labelStacking': 'vertical'}
+    }
+  });
+
+  // Combina diferentes componentes gráficos y de control en un solo panel interactivo. 
+  var dashboard = new google.visualization.Dashboard(document.getElementById('chart-container2'));
+  // establecer una relación de vinculación entre dos componentes
+  dashboard.bind(control2, chartWrapper);
+
+  dashboard.draw(dataTable)
+  // chart.draw(dataTable, options);
+}
+
+// Llamar a la función para el gráfico de productos
+fetchDataAndDrawProductChart();
