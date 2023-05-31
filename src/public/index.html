@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -10,25 +9,52 @@
     <script src="./script.js"></script>
     <link rel="stylesheet" href="./styles.css">
 </head>
-
 <body>
-    
-    <h1>Tablero con Google Charts</h1>
-    <!-- <h2>Restaurante La Centenaria</h2> -->
-    <!-- Chart 1 -->
+    <h1>Tablero con Google Charts - Restaurante "La Centenaria"</h1>
     <div class="chart-container-main">
+      <!-- ---------------- Chart 1 ---------------- -->
       <div class="chart-container-item" id="chart-container">
-        <div id="control_div"></div>
-        <button style="margin: 1em 1em 1em 2em" onclick="changeRange();">
-          Top 5 productos más vendidos
-        </button><br />
-        <div id="chart_div" ></div>
+        <!-- Controles -->
+        <div class="controls">
+          <div id="control_div"></div>
+          <button class="button-range" onclick="changeRange();">
+            Top 5 platillos más vendidos
+          </button><br />
+          <button class="button-range" onclick="changeDefaultRange();">
+            Restaurar
+          </button>
+        </div>
+        <!-- Gráfico -->
+        <div class="graphic">
+          <div id="chart_div" ></div>
+        </div>
       </div>
-    <!-- Chart 2 -->
-      <div class="chart-container" id="chart-container2">
-        <div id="control_div2"></div>
+      <!-- ---------------- Chart 3 ---------------- -->
+      <div class="chart-container-item" id="chart-container3">
+        <!-- Controles -->
+        <div class="controls">
+          <div id="control_div3"></div>
+        </div>
+        <!-- Gráfico -->
+        <div class="graphic">
+          <div id="chart_div3"></div>
+        </div>
       </div>
+    <!-- ---------------- Chart 2 ---------------- -->
+      <div class="chart-container-item" id="chart-container2">
+        <!-- Controles -->
+        <div class="controls">
+          <div id="control_div2"></div>
+          <button class="button-range" onclick="changeEmpleados();">
+            Top 5 empleados
+          </button>
+        </div>
+        <!-- Gráfico -->
+        <div class="graphic">
+          <div id="chart_div2"></div>
+        </div>
+      </div>
+    
     </div>
 </body>
-
 </html>
