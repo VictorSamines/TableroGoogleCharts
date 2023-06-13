@@ -57,8 +57,8 @@ function drawProductChart(productData) {
   // Opciones de personalización del gráfico
   var options = {
     title: "Platillos más vendidos",
-    width: 625,
-    height: 500,
+    width: 505,
+    height: 400,
     hAxis: { title: "Ventas" },
     vAxis: { title: "Productos" },
     bar: {groupWidth: "95%"},
@@ -139,8 +139,8 @@ function drawEmployeeChart(employeeData) {
 
   var options = {
     title: "Empleados con Mayores Ventas",
-    width: 625,
-    height: 500,
+    width: 480,
+    height: 400,
     is3D: true,
     pieHole: 0.4, // Proporción del agujero central (0.4 significa un donut chart)
     colors: ["#4285F4", "#DB4437", "#F4B400", "#0F9D58", "#AB47BC"], // Colores personalizados para las partes del gráfico
@@ -207,7 +207,7 @@ function drawGastosChart(gastosData) {
   dataTable.addColumn('date', 'Fecha');
   dataTable.addColumn('number', 'Ingresos');
   dataTable.addColumn('number', 'Gastos');
-
+  
   // Agregar los datos a la tabla
   for (var i = 0; i < gastosData.length; i++) {
     var dataPoint = gastosData[i];
@@ -215,11 +215,17 @@ function drawGastosChart(gastosData) {
     var month = dataPoint.month;
     var ingresos = parseFloat(dataPoint.ingresos);
     var gastos = parseFloat(dataPoint.gastos);
-    dataTable.addRow([new Date(year, month - 1), ingresos, gastos]);
+    // Crear una fecha al inicio del mes
+    var date = new Date(year, month - 1, 1);
+    var fecha = new Date(date);
+    // console.log(date)
+    dataTable.addRow([fecha, ingresos, gastos]);
   }
+
+  
   var options = {
     title: 'Ingresos y Gastos',
-    width: 800,
+    width: 470,
     height: 400,
     curveType: 'polynomial',
     legend: { position: 'bottom' },
@@ -234,27 +240,41 @@ function drawGastosChart(gastosData) {
   var chart = new google.visualization.ChartWrapper({
     chartType: 'LineChart',
     containerId: 'chart_div3',
-    // Data del chart
     dataTable: dataTable,
     options: options
   });
 
-  // Range filter
-  var control = new google.visualization.ControlWrapper({
-    controlType: 'NumberRangeFilter',
+  var rangeFilter = new google.visualization.ControlWrapper({
+    controlType: 'ChartRangeFilter',
     containerId: 'control_div3',
     options: {
-      // Personalización
-      filterColumnLabel: 'Ingresos',
-      'ui': {'labelStacking': 'vertical'}
+      filterColumnIndex: 0, // Índice de la columna que contiene las fechas
+      filterColumnLabel: "test",
+      ui: {
+        chartType: 'LineChart',
+        chartOptions: {
+          height: 50,
+          width: 470,
+          chartArea: {
+            width: '80%'
+          },
+          hAxis: {
+            format: 'MMM yyyy'
+          }
+        }
+      }
     }
   });
 
-  var dashboard = new google.visualization.Dashboard(document.getElementById('chart-container3'))
+  // Establecer el rango inicial en el primer y último día del mes más antiguo
+  var startDate = dataTable.getValue(0, 0);
+  var endDate = dataTable.getValue(dataTable.getNumberOfRows() - 1, 0);
+  rangeFilter.setState({ range: { start: startDate, end: endDate } });
 
-  dashboard.bind(control,chart)
+  var dashboard = new google.visualization.Dashboard(document.getElementById('chart-container3'));
 
-  dashboard.draw(dataTable)
+  dashboard.bind(rangeFilter, chart);
+  dashboard.draw(dataTable);
 }
 
-fetchDataAndDrawGastosChart()
+fetchDataAndDrawGastosChart();

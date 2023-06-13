@@ -21,14 +21,20 @@ h1 {
   color: var(--title);
   margin-top: 0;
 }
-
-.chart-container-main {
+/* .graphic {
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: auto auto;
   align-items: center;
   gap: .2em;
-  /* border: 1px solid var(--border); */
+} */
+
+.chart-container-main {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: auto auto;
+  align-items: center;
+  gap: .2em;
 }
 .chart-container-item {
   border: 1px solid var(--border);
@@ -43,6 +49,7 @@ h1 {
   display: flex;
   justify-content: center;
   place-items: center;
+  flex-wrap: wrap;
 }
 
 .button-range {
@@ -60,6 +67,6 @@ h1 {
 
 @media screen and (max-width: 1023px) {
   .chart-container-main {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
   }
 }

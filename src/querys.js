@@ -28,8 +28,8 @@ LIMIT 6;`;
 const queryIngresoGastoMensual = `SELECT
 EXTRACT(YEAR FROM aml.date) AS year,
 EXTRACT(MONTH FROM aml.date) AS month,
-SUM(CASE WHEN aml.balance > 0 THEN aml.balance ELSE 0 END) AS ingresos,
-SUM(CASE WHEN aml.balance < 0 THEN -aml.balance ELSE 0 END) AS gastos
+SUM(CASE WHEN aml.balance >= 0 THEN aml.balance ELSE 0 END) AS ingresos,
+SUM(CASE WHEN aml.balance < 0 THEN aml.balance ELSE 0 END) AS gastos
 FROM
 account_move_line AS aml
 INNER JOIN account_move AS am ON aml.move_id = am.id
@@ -38,7 +38,7 @@ am.state = 'posted' -- Opcional: incluye solo movimientos contables confirmados
 GROUP BY
 year, month
 ORDER BY
-year, month`;
+year, month;`;
 
 module.exports = {
   queryProductTop,
